@@ -62,7 +62,7 @@ const modifyCustomer = ()=>{
     customer.salesRepEmployeeNumber = document.getElementById("salesRepEmployeeNumber").value;
     customer.creditLimit = document.getElementById("creditLimit").value;
     $.ajax({
-        type: 'POST',
+        type: 'PUT',
         headers: {
             "Accept": "application/json",
             "Content-Type": "application/x-www-form-urlencoded",
@@ -115,7 +115,7 @@ const getCustomerById=(customerNumber)=>{
 
 const deleteCustomer=(customerNumber)=>{
     $.ajax({
-        method: "POST",
+        method: "DELETE",
         headers: {
             "Accept": "application/json",
             "Content-Type": "application/x-www-form-urlencoded",
