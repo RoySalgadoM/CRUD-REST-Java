@@ -1,0 +1,96 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<% String context = request.getContextPath();%>
+<html>
+<head>
+    <title>Products</title>
+    <link rel="stylesheet" href="<%=context%>/css/bootstrap.min.css">
+    <link rel="stylesheet" href="<%=context%>/css/all.min.css">
+</head>
+<body class="bg-dark" onload="getAllProducts()">
+
+<div class="container-fluid">
+    <h1 class="text-center" style="color: white;">Registered products</h1>
+    <div class="row">
+        <div class="col-12">
+            <a href="<%=context%>/registerProduct.jsp" class="btn btn-primary btn-block">Register an office</a>
+        </div>
+    </div>
+    <table id="table" class="table table-responsive table-hover table-dark">
+        <thead>
+        <tr>
+            <th scope="col" class="text-center">Modify</th>
+            <th scope="col" class="text-center">Delete</th>
+            <th scope="col">Product code</th>
+            <th scope="col">Product name</th>
+            <th scope="col">Product line</th>
+            <th scope="col">Product scale</th>
+            <th scope="col">Product vendor</th>
+            <th scope="col">Product description</th>
+            <th scope="col">Quantity in stock</th>
+            <th scope="col">Buy price</th>
+            <th scope="col">MSRP</th>
+
+        </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+    </table>
+    <div class="modal fade modal-customer"  style="color: white;" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content" style="background-color: #343a40;">
+                <div class="container-fluid">
+                    <h1 class="text-center">Office registration</h1>
+                    <hr>
+                    <form id="formOffice">
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label>Product code</label>
+                                <input type="text" class="form-control" id="productCode" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Product name</label>
+                                <input type="text" class="form-control" id="productName"required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Product line</label>
+                                <input type="text" class="form-control" id="productLine"required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Product scale</label>
+                                <input type="text" class="form-control" id="productScale"required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Product vendor</label>
+                                <input type="text" class="form-control" id="productVendor"required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Product description</label>
+                                <input type="text" class="form-control" id="productDescription"required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Quantity in stock</label>
+                                <input type="text" class="form-control" id="quantityInStock"required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Buy price</label>
+                                <input type="number" class="form-control" id="buyPrice"required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>MSRP</label>
+                                <input type="text" class="form-control" id="msrp"required>
+                            </div>
+                        </div>
+
+                        <button type="button" onclick="modifyProduct()" class="btn btn-success btn-block">Modify</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+<script src="<%=context%>/js/index.js"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</body>
+</html>
