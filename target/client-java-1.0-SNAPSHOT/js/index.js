@@ -502,3 +502,202 @@ const deleteProduct=(productCode)=>{
         }
     });
 }
+
+
+// ----------------------------------------------------------------------------------------
+const getAllProductsLines = ()=>{
+    $.ajax({
+        method: "GET",
+        url: "http://localhost:8080/RESTServices_war_exploded/productLines"
+    }).done(function(res){
+        let content = "";
+        let table = document.getElementById("table")
+        let tbody = document.getElementById("tbody")
+
+        for(let i = 0; i < res.length; i++){
+            if(res[i].htmlDescription==undefined && res[i].image==undefined){
+                content += `
+                <tr>
+                    <td>
+                        <button type="button" onclick="getProductById('${ res[i].productCode }')" data-toggle="modal" data-target=".modal-customer" class="btn btn-primary"><i class="fas fa-edit"></i></button>
+                    </td>
+                    <td>
+                        <button onclick="deleteProduct('${ res[i].productCode }')" class="btn btn-danger"><i class="fas fa-trash"></i></button>
+                    </td>
+                    <td>${ res[i].productLine }</td>
+                    <td>${ res[i].textDescription }</td>
+                    <td>Without description</td>
+                    <td>
+                        Sin imagen
+                    </td>
+                </tr>
+            `;
+            }else if(res[i].htmlDescription==undefined){
+                content += `
+                <tr>
+                    <td>
+                        <button type="button" onclick="getProductById('${ res[i].productCode }')" data-toggle="modal" data-target=".modal-customer" class="btn btn-primary"><i class="fas fa-edit"></i></button>
+                    </td>
+                    <td>
+                        <button onclick="deleteProduct('${ res[i].productCode }')" class="btn btn-danger"><i class="fas fa-trash"></i></button>
+                    </td>
+                    <td>${ res[i].productLine }</td>
+                    <td>${ res[i].textDescription }</td>
+                    <td>Without description</td>
+                    <td>
+                        <button class="btn btn-success"><i class="far fa-eye"></i></button>
+                    </td>
+                </tr>
+            `;
+            }else if(res[i].image==undefined){
+                content += `
+                <tr>
+                    <td>
+                        <button type="button" onclick="getProductById('${ res[i].productCode }')" data-toggle="modal" data-target=".modal-customer" class="btn btn-primary"><i class="fas fa-edit"></i></button>
+                    </td>
+                    <td>
+                        <button onclick="deleteProduct('${ res[i].productCode }')" class="btn btn-danger"><i class="fas fa-trash"></i></button>
+                    </td>
+                    <td>${ res[i].productLine }</td>
+                    <td>${ res[i].textDescription }</td>
+                    <td>${ res[i].htmlDescription }</td>
+                    <td>
+                        Sin imagen
+                    </td>
+                </tr>
+            `;
+            }
+
+
+        }
+        $("#table > tbody").html(content);
+    });
+}
+
+const registerProductLine = ()=>{
+    let product = new Object();
+    product.productCode = document.getElementById("productCode").value;
+    product.productName = document.getElementById("productName").value;
+    product.productLine = document.getElementById("productLine").value;
+    product.productScale = document.getElementById("productScale").value;
+    product.productVendor = document.getElementById("productVendor").value;
+    product.productDescription = document.getElementById("productDescription").value;
+    product.quantityInStock = document.getElementById("quantityInStock").value;
+    product.buyPrice = document.getElementById("buyPrice").value;
+    product.msrp = document.getElementById("msrp").value;
+    $.ajax({
+        type: 'POST',
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/x-www-form-urlencoded",
+        },
+        url: 'http://localhost:8080/RESTServices_war_exploded/products/save',
+        data: product,
+
+    }).done(function(res) {
+        if(res==null){
+            Swal.fire({
+                icon: 'error',
+                title: 'The product could not be registered',
+                text: 'There may be duplicate data in the database'
+            })
+        }else{
+            Swal.fire({
+                title: 'The product has been registered',
+                confirmButtonText: 'Go to the product table',
+                icon: 'success',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    location.href = "http://localhost:8081/client_java_war_exploded/productsIndex.jsp"
+                }
+            })
+        }
+    });
+}
+
+const modifyProductLine = ()=>{
+    let product = new Object();
+    product.productCode = document.getElementById("productCode").value;
+    product.productName = document.getElementById("productName").value;
+    product.productLine = document.getElementById("productLine").value;
+    product.productScale = document.getElementById("productScale").value;
+    product.productVendor = document.getElementById("productVendor").value;
+    product.productDescription = document.getElementById("productDescription").value;
+    product.quantityInStock = document.getElementById("quantityInStock").value;
+    product.buyPrice = document.getElementById("buyPrice").value;
+    product.msrp = document.getElementById("msrp").value;
+    $.ajax({
+        type: 'POST',
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/x-www-form-urlencoded",
+        },
+        url: `http://localhost:8080/RESTServices_war_exploded/products/save/${product.productCode}`,
+        data: product,
+
+    }).done(function(res) {
+        if(res==null){
+            Swal.fire({
+                icon: 'error',
+                title: 'The product could not be modified',
+                text: 'the product has not been modified'
+            })
+        }else{
+            Swal.fire({
+                title: 'The product has been modified',
+                confirmButtonText: 'Reload the product table',
+                icon: 'success',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    location.href = "http://localhost:8081/client_java_war_exploded/productsIndex.jsp"
+                }
+            })
+        }
+    });
+}
+
+const getProductLineById=(productCode)=>{
+    $.ajax({
+        method: "GET",
+        url: `http://localhost:8080/RESTServices_war_exploded/products/${productCode}`
+    }).done(function(res){
+        document.getElementById("productCode").value = res.productCode
+        document.getElementById("productName").value = res.productName
+        document.getElementById("productLine").value=res.productLine
+        document.getElementById("productScale").value=res.productScale
+        document.getElementById("productVendor").value=res.productVendor
+        document.getElementById("productDescription").value=res.productDescription
+        document.getElementById("quantityInStock").value=res.quantityInStock
+        document.getElementById("buyPrice").value=res.buyPrice
+        document.getElementById("msrp").value=res.msrp
+    });
+}
+const deleteProductLine=(productCode)=>{
+    $.ajax({
+        method: "POST",
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/x-www-form-urlencoded",
+        },
+        url: `http://localhost:8080/RESTServices_war_exploded/products/delete/${productCode}`
+    }).done(function(res){
+        if(res==null){
+            Swal.fire({
+                icon: 'error',
+                title: 'The product could not be removed!',
+                text: 'Check the database'
+            })
+        }else{
+            Swal.fire({
+                title: 'The product has been removed!',
+                confirmButtonText: 'Reload the product table',
+                icon: 'success',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    location.href = "http://localhost:8081/client_java_war_exploded/productsIndex.jsp"
+                }
+            })
+
+        }
+    });
+}
