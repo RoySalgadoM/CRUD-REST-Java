@@ -8,7 +8,7 @@
 </head>
 <body class="bg-dark" style="color: white;">
 <div class="container">
-    <h1 class="text-center">Office registration</h1>
+    <h1 class="text-center">Product lines registration</h1>
     <hr>
     <form id="formOffice">
         <div class="form-row">
@@ -26,11 +26,11 @@
             </div>
             <div class="form-group col-md-6">
                 <label>Image</label>
-                <input type="file" class="form-control-file" id="image"required>
+                <input type="number" class="form-control" id="image"required>
             </div>
         </div>
 
-        <button type="button" onclick="registerOffice()" class="btn btn-success btn-block">Register</button>
+        <button type="button" onclick="registerProductLine()" class="btn btn-success btn-block">Register</button>
     </form>
 </div>
 <script src="<%=context%>/js/index.js"></script>

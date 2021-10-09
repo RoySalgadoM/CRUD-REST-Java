@@ -515,14 +515,14 @@ const getAllProductsLines = ()=>{
         let tbody = document.getElementById("tbody")
 
         for(let i = 0; i < res.length; i++){
-            if(res[i].htmlDescription==undefined && res[i].image==undefined){
+            if(res[i].htmlDescription==undefined && res[i].base64Image==undefined){
                 content += `
                 <tr>
                     <td>
-                        <button type="button" onclick="getProductById('${ res[i].productCode }')" data-toggle="modal" data-target=".modal-customer" class="btn btn-primary"><i class="fas fa-edit"></i></button>
+                        <button type="button" onclick="getProductLineById('${ res[i].productLine }')" data-toggle="modal" data-target=".modal-customer" class="btn btn-primary"><i class="fas fa-edit"></i></button>
                     </td>
                     <td>
-                        <button onclick="deleteProduct('${ res[i].productCode }')" class="btn btn-danger"><i class="fas fa-trash"></i></button>
+                        <button onclick="deleteProductLine('${ res[i].productLine }')" class="btn btn-danger"><i class="fas fa-trash"></i></button>
                     </td>
                     <td>${ res[i].productLine }</td>
                     <td>${ res[i].textDescription }</td>
@@ -536,33 +536,50 @@ const getAllProductsLines = ()=>{
                 content += `
                 <tr>
                     <td>
-                        <button type="button" onclick="getProductById('${ res[i].productCode }')" data-toggle="modal" data-target=".modal-customer" class="btn btn-primary"><i class="fas fa-edit"></i></button>
+                        <button type="button" onclick="getProductLineById('${ res[i].productLine }')" data-toggle="modal" data-target=".modal-customer" class="btn btn-primary"><i class="fas fa-edit"></i></button>
                     </td>
                     <td>
-                        <button onclick="deleteProduct('${ res[i].productCode }')" class="btn btn-danger"><i class="fas fa-trash"></i></button>
+                        <button onclick="deleteProductLine('${ res[i].productLine }')" class="btn btn-danger"><i class="fas fa-trash"></i></button>
                     </td>
                     <td>${ res[i].productLine }</td>
                     <td>${ res[i].textDescription }</td>
                     <td>Without description</td>
                     <td>
-                        <button class="btn btn-success"><i class="far fa-eye"></i></button>
+                        ${res[i].base64Image}
                     </td>
                 </tr>
             `;
-            }else if(res[i].image==undefined){
+            }else if(res[i].base64Image==undefined){
                 content += `
                 <tr>
                     <td>
-                        <button type="button" onclick="getProductById('${ res[i].productCode }')" data-toggle="modal" data-target=".modal-customer" class="btn btn-primary"><i class="fas fa-edit"></i></button>
+                        <button type="button" onclick="getProductLineById('${ res[i].productLine }')" data-toggle="modal" data-target=".modal-customer" class="btn btn-primary"><i class="fas fa-edit"></i></button>
                     </td>
                     <td>
-                        <button onclick="deleteProduct('${ res[i].productCode }')" class="btn btn-danger"><i class="fas fa-trash"></i></button>
+                        <button onclick="deleteProductLine('${ res[i].productLine }')" class="btn btn-danger"><i class="fas fa-trash"></i></button>
                     </td>
                     <td>${ res[i].productLine }</td>
                     <td>${ res[i].textDescription }</td>
                     <td>${ res[i].htmlDescription }</td>
                     <td>
                         Sin imagen
+                    </td>
+                </tr>
+            `;
+            }else if(res[i].htmlDescription!=undefined && res[i].base64Image!=undefined){
+                content += `
+                <tr>
+                    <td>
+                        <button type="button" onclick="getProductLineById('${ res[i].productLine }')" data-toggle="modal" data-target=".modal-customer" class="btn btn-primary"><i class="fas fa-edit"></i></button>
+                    </td>
+                    <td>
+                        <button onclick="deleteProductLine('${ res[i].productLine }')" class="btn btn-danger"><i class="fas fa-trash"></i></button>
+                    </td>
+                    <td>${ res[i].productLine }</td>
+                    <td>${ res[i].textDescription }</td>
+                    <td>${ res[i].htmlDescription }</td>
+                    <td>
+                        ${res[i].base64Image}
                     </td>
                 </tr>
             `;
@@ -576,22 +593,17 @@ const getAllProductsLines = ()=>{
 
 const registerProductLine = ()=>{
     let product = new Object();
-    product.productCode = document.getElementById("productCode").value;
-    product.productName = document.getElementById("productName").value;
     product.productLine = document.getElementById("productLine").value;
-    product.productScale = document.getElementById("productScale").value;
-    product.productVendor = document.getElementById("productVendor").value;
-    product.productDescription = document.getElementById("productDescription").value;
-    product.quantityInStock = document.getElementById("quantityInStock").value;
-    product.buyPrice = document.getElementById("buyPrice").value;
-    product.msrp = document.getElementById("msrp").value;
+    product.textDescription = document.getElementById("textDescription").value;
+    product.htmlDescription = document.getElementById("htmlDescription").value;
+    product.image = document.getElementById("image").value;
     $.ajax({
         type: 'POST',
         headers: {
             "Accept": "application/json",
             "Content-Type": "application/x-www-form-urlencoded",
         },
-        url: 'http://localhost:8080/RESTServices_war_exploded/products/save',
+        url: 'http://localhost:8080/RESTServices_war_exploded/productLines/save',
         data: product,
 
     }).done(function(res) {
@@ -608,7 +620,7 @@ const registerProductLine = ()=>{
                 icon: 'success',
             }).then((result) => {
                 if (result.isConfirmed) {
-                    location.href = "http://localhost:8081/client_java_war_exploded/productsIndex.jsp"
+                    location.href = "http://localhost:8081/client_java_war_exploded/productsLinesIndex.jsp"
                 }
             })
         }
@@ -617,22 +629,17 @@ const registerProductLine = ()=>{
 
 const modifyProductLine = ()=>{
     let product = new Object();
-    product.productCode = document.getElementById("productCode").value;
-    product.productName = document.getElementById("productName").value;
     product.productLine = document.getElementById("productLine").value;
-    product.productScale = document.getElementById("productScale").value;
-    product.productVendor = document.getElementById("productVendor").value;
-    product.productDescription = document.getElementById("productDescription").value;
-    product.quantityInStock = document.getElementById("quantityInStock").value;
-    product.buyPrice = document.getElementById("buyPrice").value;
-    product.msrp = document.getElementById("msrp").value;
+    product.textDescription = document.getElementById("textDescription").value;
+    product.htmlDescription = document.getElementById("htmlDescription").value;
+    product.image = document.getElementById("image").value;
     $.ajax({
         type: 'POST',
         headers: {
             "Accept": "application/json",
             "Content-Type": "application/x-www-form-urlencoded",
         },
-        url: `http://localhost:8080/RESTServices_war_exploded/products/save/${product.productCode}`,
+        url: `http://localhost:8080/RESTServices_war_exploded/productLines/save/${product.productLine}`,
         data: product,
 
     }).done(function(res) {
@@ -649,7 +656,7 @@ const modifyProductLine = ()=>{
                 icon: 'success',
             }).then((result) => {
                 if (result.isConfirmed) {
-                    location.href = "http://localhost:8081/client_java_war_exploded/productsIndex.jsp"
+                    location.href = "http://localhost:8081/client_java_war_exploded/productsLinesIndex.jsp"
                 }
             })
         }
@@ -659,17 +666,21 @@ const modifyProductLine = ()=>{
 const getProductLineById=(productCode)=>{
     $.ajax({
         method: "GET",
-        url: `http://localhost:8080/RESTServices_war_exploded/products/${productCode}`
+        url: `http://localhost:8080/RESTServices_war_exploded/productLines/${productCode}`
     }).done(function(res){
-        document.getElementById("productCode").value = res.productCode
-        document.getElementById("productName").value = res.productName
-        document.getElementById("productLine").value=res.productLine
-        document.getElementById("productScale").value=res.productScale
-        document.getElementById("productVendor").value=res.productVendor
-        document.getElementById("productDescription").value=res.productDescription
-        document.getElementById("quantityInStock").value=res.quantityInStock
-        document.getElementById("buyPrice").value=res.buyPrice
-        document.getElementById("msrp").value=res.msrp
+        document.getElementById("productLine").value = res.productLine
+        document.getElementById("textDescription").value = res.textDescription
+        if(res.htmlDescription==undefined){
+            document.getElementById("htmlDescription").value=''
+        }else{
+            document.getElementById("htmlDescription").value=res.htmlDescription
+        }
+        if(res.base64Image==undefined){
+            document.getElementById("image").value=''
+        }else{
+            document.getElementById("image").value=res.base64Image
+        }
+
     });
 }
 const deleteProductLine=(productCode)=>{
@@ -679,7 +690,7 @@ const deleteProductLine=(productCode)=>{
             "Accept": "application/json",
             "Content-Type": "application/x-www-form-urlencoded",
         },
-        url: `http://localhost:8080/RESTServices_war_exploded/products/delete/${productCode}`
+        url: `http://localhost:8080/RESTServices_war_exploded/productLines/delete/${productCode}`
     }).done(function(res){
         if(res==null){
             Swal.fire({
@@ -694,7 +705,7 @@ const deleteProductLine=(productCode)=>{
                 icon: 'success',
             }).then((result) => {
                 if (result.isConfirmed) {
-                    location.href = "http://localhost:8081/client_java_war_exploded/productsIndex.jsp"
+                    location.href = "http://localhost:8081/client_java_war_exploded/productsLinesIndex.jsp"
                 }
             })
 

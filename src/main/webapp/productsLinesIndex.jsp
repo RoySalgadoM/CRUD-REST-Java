@@ -34,11 +34,11 @@
                 <div class="container-fluid">
                     <h1 class="text-center">Product lines registration</h1>
                     <hr>
-                    <form id="formOffice">
+                    <form id="formOffice" enctype="multipart/form-data">
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label>Product line</label>
-                                <input type="text" class="form-control" id="productLine" required>
+                                <input type="text" readonly class="form-control" id="productLine" required>
                             </div>
                             <div class="form-group col-md-6">
                                 <label>Text description</label>
@@ -50,11 +50,11 @@
                             </div>
                             <div class="form-group col-md-6">
                                 <label>Image</label>
-                                <input type="file" class="form-control-file" id="image"required>
+                                <input type="text" class="form-control" id="image"required>
                             </div>
                         </div>
 
-                        <button type="button" onclick="registerOffice()" class="btn btn-success btn-block">Register</button>
+                        <button type="button" onclick="modifyProductLine()" class="btn btn-success btn-block">Modify</button>
                     </form>
                 </div>
             </div>
